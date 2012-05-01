@@ -1,5 +1,5 @@
-#ifndef FOODING
-#define FOODING
+#ifndef _FOOD
+#define _FOOD
 #include "SDL.h"
 #include <stdlib.h>
 #include <assert.h>
@@ -24,10 +24,24 @@ void destroyFood(Food food){
 void displayFood(SDL_Surface *dest,Food food){
   SDL_BlitSurface(food.surface,NULL,dest,&(food.position));
 }
+int isGood(SDL_Rect position){
+ if ((position.x%SEGMENT==0)&&(position.y%SEGMENT==0)){
+      return 1;
+   }
+ else {
+      return 0;
+   } 
+}
 void regenFood(Food *food) {
   extern ScreenWidth;
   extern ScreenHeight;
-  food->position.x = (SEGMENT/4)+(rand()%(ScreenWidth/SEGMENT));
-  food->position.y = (SEGMENT/4)+(rand()%(ScreenHeight/SEGMENT));
- }
+  do {
+  food->position.x = (rand()%(ScreenWidth-SEGMENT));
+  food->position.y = (rand()%(ScreenHeight-SEGMENT));
+  }
+  while (!isGood(food->position)) ; 
+  int opt= (SEGMENT/2)-(food->size/2);
+  food->position.x+=opt;
+  food->position.y+=opt;
+}
 #endif

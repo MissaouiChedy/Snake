@@ -4,7 +4,6 @@
 #include "RectCollection.h"
 #include <assert.h>
 #include <stdio.h>
-#define SEGMENT 10
 enum DIRECTION {
 UP =1,
 RIGHT=2,
@@ -16,11 +15,13 @@ struct SNAKE {
   SDL_Surface *surface;
   RectCollection vect;  
   Direction direction;  
-  
-  };
+  int size;
+  int xBound;
+  int yBound;
+};
 typedef struct SNAKE Snake;
 
-Snake createSnake(int length) ;
+Snake createSnake(int ,int ,int ,int ) ;
 
 void displaySnake(SDL_Surface *dest,Snake snake);
 
@@ -34,18 +35,21 @@ void moveSnake(Snake *snake) ;
 
 void destroySnake(Snake snake);
 
-Snake createSnake(int length) {
+Snake createSnake(int length,int size,int screenWidth,int screenHeight) {
   int i;
   Snake temp ;
-  temp.surface= SDL_CreateRGBSurface(SDL_HWSURFACE,SEGMENT,SEGMENT,16,0,0,0,0);
+  temp.surface= SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
   temp.vect = createRectCollection(length);
   SDL_Rect initing = createRect(100,100);
   for (i=0;i<temp.vect.length;i++){
      setRect(&(temp.vect),i,initing);
-     initing.y-=SEGMENT;
+     initing.y-=size;
     }
   temp.direction=DOWN; 
- return temp;
+  temp.size=size;
+  temp.xBound = screenWidth - size;
+  temp.yBound = screenHeight -size ; 
+return temp;
 }
 
 void displaySnake(SDL_Surface *dest,Snake snake){
@@ -60,8 +64,8 @@ void displaySnake(SDL_Surface *dest,Snake snake){
 void  eat(Snake *snake){
  SDL_Rect *newRect ; 
  newRect=getRect(snake->vect,snake->vect.length-1);
- newRect->x-=SEGMENT;
- newRect->y-=SEGMENT; 
+ newRect->x-=snake->size;
+ newRect->y-=snake->size; 
  addRect(&(snake->vect),*newRect);
 }
 Direction opposite(Direction direction){
@@ -70,7 +74,7 @@ Direction opposite(Direction direction){
    case DOWN : return UP;
    case RIGHT: return LEFT;
    case LEFT :return RIGHT;
-   default : printf("error bad direction at Direction opposite(Direction);");
+   default : printf("Error bad direction at Direction opposite(Direction);");
    }
 }
 void setDirection(Snake *snake,int direction){
@@ -79,36 +83,34 @@ void setDirection(Snake *snake,int direction){
       snake->direction=direction;
      }
 } 
- void moveSnake(Snake *snake) {
-   extern ScreenHeight;
-   extern ScreenWidth;
+void moveSnake(Snake *snake) {
    shiftRight(&(snake->vect));
    switch (snake->direction) {
     case UP :   
-              getRect(snake->vect,0)->y-=SEGMENT;
+              getRect(snake->vect,0)->y-=snake->size;
               if (getRect(snake->vect,0)->y<0){
-               getRect(snake->vect,0)->y=ScreenHeight-SEGMENT;
-               }
+                getRect(snake->vect,0)->y=snake->yBound;
+              }
               break;
     case DOWN :   
-               getRect(snake->vect,0)->y+=SEGMENT;
-               if (getRect(snake->vect,0)->y>=ScreenHeight){
-               getRect(snake->vect,0)->y=0;
-                }
+               getRect(snake->vect,0)->y+=snake->size;
+               if (getRect(snake->vect,0)->y>snake->yBound){
+                 getRect(snake->vect,0)->y=0;
+               }
                break;
     case RIGHT : 
-                getRect(snake->vect,0)->x+=SEGMENT;
-               if (getRect(snake->vect,0)->x>=ScreenWidth){
-               getRect(snake->vect,0)->x=0;
-                }
+               getRect(snake->vect,0)->x+=snake->size;
+               if (getRect(snake->vect,0)->x>snake->xBound){
+                 getRect(snake->vect,0)->x=0;
+               }
                 break;
     case LEFT :  
-                getRect(snake->vect,0)->x-=SEGMENT;
+               getRect(snake->vect,0)->x-=snake->size;
                if (getRect(snake->vect,0)->x<0){
-               getRect(snake->vect,0)->x=ScreenWidth-SEGMENT;
-                }
+                 getRect(snake->vect,0)->x=snake->xBound;
+               }
                 break;
-    default : printf("Invalid DIRECTION At void moveSnake(Snake *snake); ");exit(-1);   
+    default : printf("Invalid DIRECTION At void moveSnake(Snake *snake); ");   
    }
  
 }

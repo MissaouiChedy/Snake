@@ -4,6 +4,8 @@
 #include "RectCollection.h"
 #include <assert.h>
 #include <stdio.h>
+typedef struct GAME Game;
+#include "Game.h"
 enum DIRECTION {
 UP =1,
 RIGHT=2,
@@ -15,12 +17,10 @@ struct SNAKE {
   SDL_Surface *surface;
   RectCollection *vect;  
   Direction direction;  
+  Game *game;
   int size;
-  int xBound;
-  int yBound;
 };
-typedef struct SNAKE Snake;
-Snake *createSnake(int length,int size,int screenWidth,int screenHeight) {
+Snake *createSnake(Game *game,int length,int size) {
   int i;
   Snake *temp=malloc(sizeof(Snake)) ;
   temp->surface= SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
@@ -31,9 +31,8 @@ Snake *createSnake(int length,int size,int screenWidth,int screenHeight) {
      initing.y-=size;
     }
   temp->direction=DOWN; 
+  temp->game=game;
   temp->size=size;
-  temp->xBound = screenWidth - size;
-  temp->yBound = screenHeight -size ; 
 return temp;
 }
 
@@ -74,25 +73,25 @@ void moveSnake(Snake *snake) {
     case UP :   
               getRect(snake->vect,0)->y-=snake->size;
               if (getRect(snake->vect,0)->y<0){
-                getRect(snake->vect,0)->y=snake->yBound;
+                getRect(snake->vect,0)->y=getYBound(snake->game);
               }
               break;
     case DOWN :   
                getRect(snake->vect,0)->y+=snake->size;
-               if (getRect(snake->vect,0)->y>snake->yBound){
+               if (getRect(snake->vect,0)->y>getYBound(snake->game)){
                  getRect(snake->vect,0)->y=0;
                }
                break;
     case RIGHT : 
                getRect(snake->vect,0)->x+=snake->size;
-               if (getRect(snake->vect,0)->x>snake->xBound){
+               if (getRect(snake->vect,0)->x>getXBound(snake->game)){
                  getRect(snake->vect,0)->x=0;
                }
                 break;
     case LEFT :  
                getRect(snake->vect,0)->x-=snake->size;
                if (getRect(snake->vect,0)->x<0){
-                 getRect(snake->vect,0)->x=snake->xBound;
+                 getRect(snake->vect,0)->x=getXBound(snake->game);
                }
                 break;
     default : printf("Invalid DIRECTION At void moveSnake(Snake *snake); ");   
@@ -103,6 +102,7 @@ void moveSnake(Snake *snake) {
 void destroySnake(Snake *snake){
  SDL_FreeSurface(snake->surface);
  snake->surface=NULL;
+ snake->game=NULL;
  destroyRectCollection(snake->vect);
  free(snake);
 }

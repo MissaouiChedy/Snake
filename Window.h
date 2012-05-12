@@ -16,18 +16,20 @@ void refreshWindow(Window *window){
 
 }
 
-Window createWindow(int width,int height,const char *title){
- Window ret;
- ret.width =width;
- ret.height=height;
- ret.surface=SDL_SetVideoMode(ret.width,ret.height,16,SDL_HWSURFACE);
+Window *createWindow(int width,int height,const char *title){
+ Window *ret;
+ ret= malloc(sizeof(Window));
+ ret->width =width;
+ ret->height=height;
+ ret->surface=SDL_SetVideoMode(ret->width,ret->height,16,SDL_HWSURFACE);
  SDL_WM_SetCaption(title,NULL);
- refreshWindow(&ret);
+ refreshWindow(ret);
  return ret;
 }
-void destroyWindow(Window window) {
- SDL_FreeSurface(window.surface);
- window.surface=NULL;
+void destroyWindow(Window *window) {
+ SDL_FreeSurface(window->surface);
+ window->surface=NULL;
+ free(window);
 }
 void flipWindow(Window *window){
  SDL_Flip(window->surface);

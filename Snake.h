@@ -13,60 +13,45 @@ LEFT=4
 typedef enum DIRECTION Direction;
 struct SNAKE {
   SDL_Surface *surface;
-  RectCollection vect;  
+  RectCollection *vect;  
   Direction direction;  
   int size;
   int xBound;
   int yBound;
 };
 typedef struct SNAKE Snake;
-
-Snake createSnake(int ,int ,int ,int ) ;
-
-void displaySnake(SDL_Surface *dest,Snake snake);
-
-void  eat(Snake *snake);
-
-Direction opposite(Direction direction);
-
-void setDirection(Snake *snake,int direction);
-
-void moveSnake(Snake *snake) ;
-
-void destroySnake(Snake snake);
-
-Snake createSnake(int length,int size,int screenWidth,int screenHeight) {
+Snake *createSnake(int length,int size,int screenWidth,int screenHeight) {
   int i;
-  Snake temp ;
-  temp.surface= SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
-  temp.vect = createRectCollection(length);
+  Snake *temp=malloc(sizeof(Snake)) ;
+  temp->surface= SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
+  temp->vect = createRectCollection(length);
   SDL_Rect initing = createRect(100,100);
-  for (i=0;i<temp.vect.length;i++){
-     setRect(&(temp.vect),i,initing);
+  for (i=0;i<temp->vect->length;i++){
+     setRect(temp->vect,i,initing);
      initing.y-=size;
     }
-  temp.direction=DOWN; 
-  temp.size=size;
-  temp.xBound = screenWidth - size;
-  temp.yBound = screenHeight -size ; 
+  temp->direction=DOWN; 
+  temp->size=size;
+  temp->xBound = screenWidth - size;
+  temp->yBound = screenHeight -size ; 
 return temp;
 }
 
-void displaySnake(SDL_Surface *dest,Snake snake){
+void displaySnake(SDL_Surface *dest,Snake *snake){
   int i;
-  for (i=0;i<snake.vect.length;i++){
+  for (i=0;i<snake->vect->length;i++){
      
-     SDL_BlitSurface(snake.surface,NULL,dest,getRect(snake.vect,i));
+     SDL_BlitSurface(snake->surface,NULL,dest,getRect(snake->vect,i));
      
    }
 }
 
 void  eat(Snake *snake){
  SDL_Rect *newRect ; 
- newRect=getRect(snake->vect,snake->vect.length-1);
+ newRect=getRect(snake->vect,snake->vect->length-1);
  newRect->x-=snake->size;
  newRect->y-=snake->size; 
- addRect(&(snake->vect),*newRect);
+ addRect(snake->vect,*newRect);
 }
 Direction opposite(Direction direction){
   switch (direction){
@@ -84,7 +69,7 @@ void setDirection(Snake *snake,int direction){
      }
 } 
 void moveSnake(Snake *snake) {
-   shiftRight(&(snake->vect));
+   shiftRight(snake->vect);
    switch (snake->direction) {
     case UP :   
               getRect(snake->vect,0)->y-=snake->size;
@@ -115,9 +100,10 @@ void moveSnake(Snake *snake) {
  
 }
 
-void destroySnake(Snake snake){
- SDL_FreeSurface(snake.surface);
- snake.surface=NULL;
- destroyRectCollection(snake.vect);
+void destroySnake(Snake *snake){
+ SDL_FreeSurface(snake->surface);
+ snake->surface=NULL;
+ destroyRectCollection(snake->vect);
+ free(snake);
 }
 #endif 

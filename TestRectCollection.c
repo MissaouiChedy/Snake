@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include "RectCollection.h"
 #include <assert.h>
-
-
-
 int main (int argc,char *argv[]){
   Rect_Collection vect = createRectCollection(4);
   addRect(&vect,createRect(10,10));  

@@ -14,7 +14,7 @@ struct GAME {
   Snake *snake;
   Food *food;
 };
-void regenFood(Game *);
+void generateFood(Game *);
 SDL_Rect getDecentredFoodPosition(Game *);
 SDL_Rect generateFoodPosition(Game *);
 
@@ -51,7 +51,7 @@ return ((_snake.x==_food.x)&&(_snake.y==_food.y));
 void displayGame(Game *game){
   moveSnake(game->snake);
   if (snakeEatFood(game)){
-   regenFood(game);
+   generateFood(game);
    eat(game->snake);
      }
   refreshWindow(game->window);
@@ -80,11 +80,13 @@ SDL_Rect centerPosition(Game *game,SDL_Rect position){
   position.y+=getCenteringFactor(game);
   return position ;
  }
+SDL_Rect deCenterPosition(Game *game,SDL_Rect position){
+  position.x-=getCenteringFactor(game);
+  position.y-=getCenteringFactor(game);
+  return position ;
+}
 SDL_Rect getDecentredFoodPosition(Game *game){
-  SDL_Rect temp = game->food->position;
-  temp.x-=getCenteringFactor(game);
-  temp.y-=getCenteringFactor(game);
-  return temp;
+  return deCenterPosition(game,game->food->position);
 }
 SDL_Rect generateFoodPosition(Game *game) {
    SDL_Rect temp;
@@ -96,7 +98,8 @@ SDL_Rect generateFoodPosition(Game *game) {
   temp=centerPosition(game,temp);
  return temp; 
 }
-void regenFood(Game *game) {
+void generateFood(Game *game) {
   setFoodPosition(game->food,generateFoodPosition(game));
+  assert(!collideWithSnake(game->snake,getDecentredFoodPosition(game)));
 }
 #endif

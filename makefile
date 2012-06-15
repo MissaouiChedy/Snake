@@ -1,24 +1,17 @@
-#snake: Window.o Snake.o Food.o
-#	gcc -I/usr/include/SDL -W -o ../snake snake.c Game.c Window.o Snake.o Food.o -lSDL
-#Window.o: 
-#	gcc -I/usr/include/SDL -W -c Window.c -lSDL
-#Game.o : Food.o Snake.o Window.o 
-#	gcc -I/usr/include/SDL -W -c Game.c Snake.o Food.o Window.o -lSDL
-#Snake.o: RectCollection.o
-#	gcc -I/usr/include/SDL -W -c Snake.c RectCollection.o -lSDL
-#Food.o:
-#	gcc -I/usr/include/SDL -W -c Food.c -lSDL
-#RectCollection.o:
-#	gcc -I/usr/include/SDL -W -c RectCollection.c -lSDL
+SDL_INCLUDE_PATH = /usr/include/SDL
+WARNING_OPTIONS = -W -Wstrict-prototypes -ansi 
 snake: Window.o Snake.o Game.o Food.o RectCollection.o
-	gcc -I/usr/include/SDL -W -o ../snake snake.c Window.o Snake.o Game.o Food.o RectCollection.o -lSDL
-Window.o:
-	gcc -I/usr/include/SDL -W -c Window.c -lSDL
-Snake.o:
-	gcc -I/usr/include/SDL -W -c Snake.c -lSDL
-Game.o :
-	gcc -I/usr/include/SDL -W -c Game.c -lSDL
-Food.o:
-	gcc -I/usr/include/SDL -W -c Food.c -lSDL
-RectCollection.o:
-	gcc -I/usr/include/SSDL -W -c RectCollection.c -lSDL
+	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) -o ../snake snake.c Window.o Snake.o Game.o Food.o RectCollection.o -lSDL
+Window.o: Window.c Window.h
+	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) -c Window.c -lSDL
+Snake.o: Snake.c Snake.h
+	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) -c Snake.c -lSDL
+Game.o : Game.c Game.h
+	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) -c Game.c -lSDL
+Food.o: Food.c Food.h
+	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) -c Food.c -lSDL
+RectCollection.o: RectCollection.c RectCollection.h
+	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) -c RectCollection.c -lSDL
+.PHONY: clean
+clean: 	
+	rm *.o

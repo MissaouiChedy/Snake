@@ -3,9 +3,9 @@
 #include <assert.h>
 #include "Window.h"
 
-Window *createWindow(int width,int height,const char *title){
- Window *ret;
- ret= malloc(sizeof(Window));
+struct WINDOW *createWindow(int width,int height,const char *title){
+ struct WINDOW *ret;
+ ret= malloc(sizeof(struct WINDOW));
  ret->width =width;
  ret->height=height;
  ret->surface=SDL_SetVideoMode(ret->width,ret->height,16,SDL_HWSURFACE);
@@ -13,14 +13,14 @@ Window *createWindow(int width,int height,const char *title){
  refreshWindow(ret);
  return ret;
 }
-void destroyWindow(Window *window) {
+void destroyWindow(struct WINDOW *window) {
  SDL_FreeSurface(window->surface);
  window->surface=NULL;
  free(window);
 }
-void flipWindow(Window *window){
+void flipWindow(struct WINDOW *window){
  SDL_Flip(window->surface);
 }
-void refreshWindow(Window *window){
+void refreshWindow(struct WINDOW *window){
  SDL_FillRect(window->surface,NULL,SDL_MapRGB(window->surface->format,255,255,255));
 }

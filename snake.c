@@ -9,7 +9,7 @@
 int main(int argc ,char *argv){
  SDL_Init(SDL_INIT_VIDEO);
  Window *frame = createWindow(SCREEN_WIDTH,SCREEN_HEIGHT,"Snakeing!");
- Game *game=createGame(frame);
+ struct GAME *game=createGame(frame);
  SDL_Event event;
  int flag =1 ;
  while (flag){

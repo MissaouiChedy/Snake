@@ -5,10 +5,8 @@ SDL_Surface *surface;
 int width;
 int height;
 };
-typedef struct WINDOW Window;
-
-Window *createWindow(int ,int ,const char *);
-void destroyWindow(Window *);
-void flipWindow(Window *);
-void refreshWindow(Window *);
+struct WINDOW *createWindow(int ,int ,const char *);
+void destroyWindow(struct WINDOW *);
+void flipWindow(struct WINDOW *);
+void refreshWindow(struct WINDOW *);
 #endif

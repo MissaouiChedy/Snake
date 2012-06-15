@@ -1,10 +1,10 @@
-#ifndef Rect_Collection
-#define Rect_Collection
-typedef struct RECTCONTAINER{
+#ifndef _RectCollection
+#define _RectCollection
+typedef struct RECTCOLLECTION RectCollection;  
+struct RECTCOLLECTION{
   SDL_Rect *vector;
   int length;
-} RectCollection;
-  
+};
 SDL_Rect createRect(int ,int );
 RectCollection *createRectCollection(int );
 void destroyRectCollection(RectCollection *);

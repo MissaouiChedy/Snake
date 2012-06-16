@@ -4,8 +4,8 @@
 #include "Game.h"
 #include "RectCollection.h"
 #include "Snake.h"
-struct SNAKE *createSnake(Game *game,int length,int size) {
-  struct SNAKE *temp=malloc(sizeof(Snake)) ;
+Snake *createSnake(Game *game,int length,int size) {
+  Snake *temp=malloc(sizeof(Snake)) ;
   temp->surface= SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
   temp->vect = createRectCollection(length);
   SDL_Rect initing = createRect(100,100);
@@ -19,14 +19,14 @@ struct SNAKE *createSnake(Game *game,int length,int size) {
   temp->size=size;
 return temp;
 }
-void displaySnake(SDL_Surface *dest,struct SNAKE *snake){
+void displaySnake(SDL_Surface *dest,Snake *snake){
   int i;
   for (i=0;i<snake->vect->length;i++){
      SDL_BlitSurface(snake->surface,NULL,dest,getRect(snake->vect,i));
    }
 }
 
-void  eat(struct SNAKE *snake){
+void  eat(Snake *snake){
   addRect( snake->vect,
                     *getRect(snake->vect,snake->vect->length-1));
 }
@@ -39,13 +39,13 @@ Direction opposite(Direction direction){
    default : printf("Error bad direction at Direction opposite(Direction);");
    }
 }
-void setDirection(struct SNAKE *snake,Direction direction){
+void setDirection(Snake *snake,Direction direction){
   assert((direction==UP)||(direction==DOWN)||(direction==RIGHT)||(direction==LEFT));
     if (direction!=opposite(snake->direction)) { 
       snake->direction=direction;
      }
 } 
-void moveSnake(struct SNAKE *snake) {
+void moveSnake(Snake *snake) {
    shiftRight(snake->vect);
    switch (snake->direction) {
     case UP :   
@@ -72,18 +72,18 @@ void moveSnake(struct SNAKE *snake) {
                  getRect(snake->vect,0)->x=getXBound(snake->game);
                }
                 break;
-    default : printf("Invalid DIRECTION At void moveSnake(struct SNAKE *snake);");   
+    default : printf("Invalid DIRECTION At void moveSnake(Snake *snake);");   
    }
  
 }
-SDL_Rect getSnakeHead(struct SNAKE *snake){
+SDL_Rect getSnakeHead(Snake *snake){
   return *(getRect(snake->vect,0));
 }
-int getSnakeLength(struct SNAKE *snake){
+int getSnakeLength(Snake *snake){
  return snake->vect->length ;
 }
 
-int collideWithSnake(struct SNAKE *snake,SDL_Rect position){
+int collideWithSnake(Snake *snake,SDL_Rect position){
  int i=0;
  int flag=0;
  for (i=0;i<getSnakeLength(snake);i++){
@@ -95,7 +95,7 @@ int collideWithSnake(struct SNAKE *snake,SDL_Rect position){
  return flag;
 }
 
-void destroySnake(struct SNAKE *snake){
+void destroySnake(Snake *snake){
  SDL_FreeSurface(snake->surface);
  snake->surface=NULL;
  snake->game=NULL;

@@ -5,25 +5,25 @@
 #define FOOD_SIZE 6
 typedef struct SNAKE Snake;
 typedef struct FOOD Food;
-typedef struct WINDOW Window;
 struct GAME {
   Window *window;
   Snake *snake;
   Food *food;
 };
-struct GAME *createGame(Window *);
-void destroyGame(struct GAME *) ;
-int getGridSize(struct GAME *);
-int getXBound(struct GAME *);
-int getYBound(struct GAME *);
-int snakeEatFood(struct GAME *);
-void displayGame(struct GAME *);
-void handleEvent(struct GAME *,SDL_Event );
-int isInGrid(struct GAME *,SDL_Rect );
-int getCenteringFactor(struct GAME *);
-SDL_Rect centerPosition(struct GAME *,SDL_Rect );
-SDL_Rect deCenterPosition(struct GAME *,SDL_Rect );
-SDL_Rect getDecentredFoodPosition(struct GAME *);
-SDL_Rect generateFoodPosition(struct GAME *) ;
-void generateFood(struct GAME *) ;
+typedef struct GAME Game;
+Game *createGame(Window *);
+void destroyGame(Game *) ;
+int getGridSize(Game *);
+int getXBound(Game *);
+int getYBound(Game *);
+int snakeEatFood(Game *);
+void displayGame(Game *);
+void handleEvent(Game *,SDL_Event );
+int isInGrid(Game *,SDL_Rect );
+int getCenteringFactor(Game *);
+SDL_Rect centerPosition(Game *,SDL_Rect );
+SDL_Rect deCenterPosition(Game *,SDL_Rect );
+SDL_Rect getDecentredFoodPosition(Game *);
+SDL_Rect generateFoodPosition(Game *) ;
+void generateFood(Game *) ;
 #endif

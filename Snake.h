@@ -16,14 +16,15 @@ struct SNAKE {
    Game *game;
    int size;
 }; 
-struct SNAKE *createSnake(Game *,int ,int ) ;
-void displaySnake(SDL_Surface *,struct SNAKE *);
-void eat(struct SNAKE *);
+typedef struct SNAKE Snake;
+Snake *createSnake(Game *,int ,int ) ;
+void displaySnake(SDL_Surface *,Snake *);
+void eat(Snake *);
 Direction opposite(Direction );
-void setDirection(struct SNAKE *,Direction );
-void moveSnake(struct SNAKE *) ;
-SDL_Rect getSnakeHead(struct SNAKE *);
-int getSnakeLength(struct SNAKE *);
-int collideWithSnake(struct SNAKE *,SDL_Rect );
-void destroySnake(struct SNAKE *);
+void setDirection(Snake *,Direction );
+void moveSnake(Snake *) ;
+SDL_Rect getSnakeHead(Snake *);
+int getSnakeLength(Snake *);
+int collideWithSnake(Snake *,SDL_Rect );
+void destroySnake(Snake *);
 #endif 

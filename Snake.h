@@ -15,7 +15,7 @@ struct SNAKE {
    Direction direction;  
    Game *game;
    int size;
-};
+}; 
 struct SNAKE *createSnake(Game *,int ,int ) ;
 void displaySnake(SDL_Surface *,struct SNAKE *);
 void eat(struct SNAKE *);

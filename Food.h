@@ -5,8 +5,9 @@ struct FOOD {
  int size;
  SDL_Rect position;
 };
-struct FOOD *createFood(int );
-void destroyFood(struct FOOD *);
-void displayFood(SDL_Surface *,struct FOOD *);
-void setFoodPosition(struct FOOD *,SDL_Rect );
+typedef struct FOOD Food;
+Food *createFood(int );
+void destroyFood(Food *);
+void displayFood(SDL_Surface *,Food *);
+void setFoodPosition(Food *,SDL_Rect );
 #endif

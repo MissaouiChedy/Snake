@@ -18,6 +18,12 @@ void destroyWindow(Window *window) {
  window->surface=NULL;
  free(window);
 }
+int getWidth(Window *window){
+  return window->width;
+}
+int getHeight(Window *window){
+  return window->height;
+}
 void flipWindow(Window *window){
  SDL_Flip(window->surface);
 }

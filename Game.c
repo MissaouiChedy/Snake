@@ -6,12 +6,12 @@
 #include "Snake.h"
 #include "Game.h"
 Game *createGame(Window *window){
-  Game *temp=malloc(sizeof(Game));
-  temp->window = window;
-  temp->snake = createSnake(temp,SNAKE_LENGTH,SNAKE_SIZE);
-  temp->food = createFood(FOOD_SIZE);
-  setFoodPosition(temp->food,generateFoodPosition(temp));
- return temp;
+  Game *instance=malloc(sizeof(Game));
+  instance->window = window;
+  instance->snake = createSnake(SNAKE_LENGTH,SNAKE_SIZE,getWidth(instance->window),getHeight(instance->window));
+  instance->food = createFood(FOOD_SIZE);
+  setFoodPosition(instance->food,generateFoodPosition(instance));
+ return instance;
 }
 void destroyGame(Game *game) {
   destroyFood(game->food);
@@ -81,11 +81,11 @@ SDL_Rect generateFoodPosition(Game *game) {
       temp.x = (rand()%(getXBound(game)));
       temp.y = (rand()%(getYBound(game)));
      }
-  while (!isInGrid(game,temp)&& !collideWithSnake(game->snake,temp) ) ; 
+  while (!isInGrid(game,temp)&& !isInSnake(game->snake,temp) ) ; 
   temp=centerPosition(game,temp);
  return temp; 
 }
 void generateFood(Game *game) {
   setFoodPosition(game->food,generateFoodPosition(game));
-  assert(!collideWithSnake(game->snake,getDecentredFoodPosition(game)));
+  assert(!isInSnake(game->snake,getDecentredFoodPosition(game)));
 }

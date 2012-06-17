@@ -4,31 +4,32 @@
 #include "Game.h"
 #include "RectCollection.h"
 #include "Snake.h"
-Snake *createSnake(Game *game,int length,int size) {
-  Snake *temp=malloc(sizeof(Snake)) ;
-  temp->surface= SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
-  temp->vect = createRectCollection(length);
+Snake *createSnake(int length,int size,int XBound,int YBound) {
+  Snake *instance = malloc(sizeof(Snake)) ;
+  instance->surface =  SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
+  instance->vect = createRectCollection(length);
   SDL_Rect initing = createRect(100,100);
-  int i;
-  for (i=0;i<temp->vect->length;i++){
-     setRect(temp->vect,i,initing);
+  int i = 0;
+  for (i = 0;i<instance->vect->length;i++){
+     setRect(instance->vect,i,initing);
      initing.y-=size;
     }
-  temp->direction=DOWN; 
-  temp->game=game;
-  temp->size=size;
-return temp;
+  instance->direction = DOWN; 
+  instance->XBound = XBound;
+  instance->YBound = YBound;
+  instance->size = size;
+return instance;
 }
 void displaySnake(SDL_Surface *dest,Snake *snake){
   int i;
-  for (i=0;i<snake->vect->length;i++){
+  for (i = 0;i<snake->vect->length;i++){
      SDL_BlitSurface(snake->surface,NULL,dest,getRect(snake->vect,i));
    }
 }
 
 void  eat(Snake *snake){
   addRect( snake->vect,
-                    *getRect(snake->vect,snake->vect->length-1));
+                    *getRect(snake->vect,getSnakeLength(snake)-1));
 }
 Direction opposite(Direction direction){
   switch (direction){
@@ -42,34 +43,34 @@ Direction opposite(Direction direction){
 void setDirection(Snake *snake,Direction direction){
   assert((direction==UP)||(direction==DOWN)||(direction==RIGHT)||(direction==LEFT));
     if (direction!=opposite(snake->direction)) { 
-      snake->direction=direction;
+      snake->direction = direction;
      }
 } 
 void moveSnake(Snake *snake) {
    shiftRight(snake->vect);
    switch (snake->direction) {
     case UP :   
-              getRect(snake->vect,0)->y-=snake->size;
+              getRect(snake->vect,0)->y -= snake->size;
               if (getRect(snake->vect,0)->y<0){
-                getRect(snake->vect,0)->y=getYBound(snake->game);
+                getRect(snake->vect,0)->y = snake->YBound;
               }
               break;
     case DOWN :   
-               getRect(snake->vect,0)->y+=snake->size;
-               if (getRect(snake->vect,0)->y>getYBound(snake->game)){
-                 getRect(snake->vect,0)->y=0;
+               getRect(snake->vect,0)->y += snake->size;
+               if (getRect(snake->vect,0)->y>(snake->YBound)){
+                 getRect(snake->vect,0)->y = 0;
                }
                break;
     case RIGHT : 
-               getRect(snake->vect,0)->x+=snake->size;
-               if (getRect(snake->vect,0)->x>getXBound(snake->game)){
-                 getRect(snake->vect,0)->x=0;
+               getRect(snake->vect,0)->x += snake->size;
+               if (getRect(snake->vect,0)->x>snake->XBound){
+                 getRect(snake->vect,0)->x = 0;
                }
                 break;
     case LEFT :  
-               getRect(snake->vect,0)->x-=snake->size;
+               getRect(snake->vect,0)->x -= snake->size;
                if (getRect(snake->vect,0)->x<0){
-                 getRect(snake->vect,0)->x=getXBound(snake->game);
+                 getRect(snake->vect,0)->x = snake->XBound;
                }
                 break;
     default : printf("Invalid DIRECTION At void moveSnake(Snake *snake);");   
@@ -83,12 +84,12 @@ int getSnakeLength(Snake *snake){
  return snake->vect->length ;
 }
 
-int collideWithSnake(Snake *snake,SDL_Rect position){
- int i=0;
- int flag=0;
- for (i=0;i<getSnakeLength(snake);i++){
+int isInSnake(Snake *snake,SDL_Rect position){
+ int i = 0;
+ int flag = 0;
+ for (i = 0;i<getSnakeLength(snake);i++){
     if( (getRect(snake->vect,i)->x==position.x)&&(getRect(snake->vect,i)->y==position.y)){
-        flag=1;
+        flag = 1;
         break;    
        }
   }
@@ -97,8 +98,7 @@ int collideWithSnake(Snake *snake,SDL_Rect position){
 
 void destroySnake(Snake *snake){
  SDL_FreeSurface(snake->surface);
- snake->surface=NULL;
- snake->game=NULL;
+ snake->surface = NULL;
  destroyRectCollection(snake->vect);
  free(snake);
 }

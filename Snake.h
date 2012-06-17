@@ -1,6 +1,5 @@
 #ifndef _SNAKE
 #define _SNAKE
-#include "RectCollection.h"
 typedef enum DIRECTION Direction;
 enum DIRECTION {
   UP =1,
@@ -9,22 +8,29 @@ enum DIRECTION {
   LEFT=4
 };
 typedef struct GAME Game;
+typedef struct RECTCOLLECTION RectCollection;
 struct SNAKE {
    SDL_Surface *surface;
    RectCollection *vect;  
    Direction direction;  
-   Game *game;
+   int XBound;
+   int YBound;
    int size;
 }; 
 typedef struct SNAKE Snake;
-Snake *createSnake(Game *,int ,int ) ;
+Snake *createSnake(int ,int ,int ,int) ;
+void destroySnake(Snake *);
 void displaySnake(SDL_Surface *,Snake *);
 void eat(Snake *);
+/*PRIVATE*/
 Direction opposite(Direction );
+
 void setDirection(Snake *,Direction );
+
 void moveSnake(Snake *) ;
+
 SDL_Rect getSnakeHead(Snake *);
+/*PRIVATE*/
 int getSnakeLength(Snake *);
-int collideWithSnake(Snake *,SDL_Rect );
-void destroySnake(Snake *);
+int isInSnake(Snake *,SDL_Rect );
 #endif 

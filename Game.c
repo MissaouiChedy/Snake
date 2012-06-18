@@ -6,7 +6,7 @@
 #include "Snake.h"
 #include "Game.h"
 Game *createGame(Window *window){
-  Game *instance = malloc(sizeof(Game));
+  Game *instance = (Game *) malloc(sizeof(Game));
   instance->window = window;
   instance->snake = createSnake(SNAKE_LENGTH,SNAKE_SIZE,
                                    getWidth(instance->window),getHeight(instance->window));

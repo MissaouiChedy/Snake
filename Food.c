@@ -4,7 +4,7 @@
 #include "Food.h"
 Food *createFood(int size,int minXYBound,int XBound,int YBound,int gridCellSize){
   Food *instance;
-  instance = malloc(sizeof(Food));
+  instance = (Food *) malloc(sizeof(Food));
   instance->size = size;
   instance->surface = SDL_CreateRGBSurface(SDL_HWSURFACE,instance->size,instance->size,16,0,0,0,0); 
   instance->position.x = 0;

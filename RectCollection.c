@@ -9,17 +9,17 @@ SDL_Rect createRect(int x,int y){
  return temp;
 }
 RectCollection *createRectCollection(int length){
-        RectCollection *ret;
-        ret=malloc(sizeof(RectCollection));
-        ret->length=length;
-        ret->vector=malloc(sizeof(SDL_Rect)*ret->length);
+        RectCollection *instance;
+        instance = (RectCollection *) malloc(sizeof(RectCollection));
+        instance->length = length;
+        instance->vector = (SDL_Rect *) malloc(sizeof(SDL_Rect)*instance->length);
         int i=0;
-        for (i=0;i<ret->length;i++){
-          (ret->vector+i)->x=0;
-          (ret->vector+i)->y=0;
+        for (i=0;i<instance->length;i++){
+          (instance->vector+i)->x=0;
+          (instance->vector+i)->y=0;
        }
-   return ret;
-  }
+   return instance;
+}
 void destroyRectCollection(RectCollection *vect){
   free(vect->vector);
   vect->vector=NULL;

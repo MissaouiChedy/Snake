@@ -5,7 +5,7 @@
 #include "RectCollection.h"
 #include "Snake.h"
 Snake *createSnake(int length,int size,int XBound,int YBound) {
-  Snake *instance = malloc(sizeof(Snake)) ;
+  Snake *instance = (Snake *) malloc(sizeof(Snake)) ;
   instance->surface =  SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
   instance->vect = createRectCollection(length);
   SDL_Rect initing = createRect(100,100);

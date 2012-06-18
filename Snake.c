@@ -15,8 +15,8 @@ Snake *createSnake(int length,int size,int XBound,int YBound) {
      initing.y-=size;
     }
   instance->direction = DOWN; 
-  instance->XBound = XBound;
-  instance->YBound = YBound;
+  instance->XBound = XBound - size;
+  instance->YBound = YBound - size;
   instance->size = size;
 return instance;
 }
@@ -26,8 +26,7 @@ void displaySnake(SDL_Surface *dest,Snake *snake){
      SDL_BlitSurface(snake->surface,NULL,dest,getRect(snake->vect,i));
    }
 }
-
-void  eat(Snake *snake){
+void eat(Snake *snake){
   addRect( snake->vect,
                     *getRect(snake->vect,getSnakeLength(snake)-1));
 }
@@ -50,35 +49,34 @@ void moveSnake(Snake *snake) {
    shiftRight(snake->vect);
    switch (snake->direction) {
     case UP :   
-              getRect(snake->vect,0)->y -= snake->size;
-              if (getRect(snake->vect,0)->y<0){
-                getRect(snake->vect,0)->y = snake->YBound;
+              getSnakeHead(snake)->y -= snake->size;
+              if (getSnakeHead(snake)->y<0){
+                getSnakeHead(snake)->y = snake->YBound;
               }
               break;
     case DOWN :   
-               getRect(snake->vect,0)->y += snake->size;
-               if (getRect(snake->vect,0)->y>(snake->YBound)){
-                 getRect(snake->vect,0)->y = 0;
+               getSnakeHead(snake)->y += snake->size;
+               if (getSnakeHead(snake)->y>(snake->YBound)){
+                 getSnakeHead(snake)->y = 0;
                }
                break;
     case RIGHT : 
-               getRect(snake->vect,0)->x += snake->size;
-               if (getRect(snake->vect,0)->x>snake->XBound){
-                 getRect(snake->vect,0)->x = 0;
+               getSnakeHead(snake)->x += snake->size;
+               if (getSnakeHead(snake)->x>snake->XBound){
+                 getSnakeHead(snake)->x = 0;
                }
                 break;
     case LEFT :  
-               getRect(snake->vect,0)->x -= snake->size;
-               if (getRect(snake->vect,0)->x<0){
-                 getRect(snake->vect,0)->x = snake->XBound;
+               getSnakeHead(snake)->x -= snake->size;
+               if (getSnakeHead(snake)->x<0){
+                 getSnakeHead(snake)->x = snake->XBound;
                }
                 break;
     default : printf("Invalid DIRECTION At void moveSnake(Snake *snake);");   
    }
- 
 }
-SDL_Rect getSnakeHead(Snake *snake){
-  return *(getRect(snake->vect,0));
+SDL_Rect *getSnakeHead(Snake *snake){
+  return getRect(snake->vect,0);
 }
 int getSnakeLength(Snake *snake){
  return snake->vect->length ;
@@ -88,7 +86,7 @@ int isInSnake(Snake *snake,SDL_Rect position){
  int i = 0;
  int flag = 0;
  for (i = 0;i<getSnakeLength(snake);i++){
-    if( (getRect(snake->vect,i)->x==position.x)&&(getRect(snake->vect,i)->y==position.y)){
+      if( (getRect(snake->vect,i)->x==position.x)&&(getRect(snake->vect,i)->y==position.y)){
         flag = 1;
         break;    
        }

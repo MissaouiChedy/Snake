@@ -29,7 +29,7 @@ void setDirection(Snake *,Direction );
 
 void moveSnake(Snake *) ;
 
-SDL_Rect getSnakeHead(Snake *);
+SDL_Rect *getSnakeHead(Snake *);
 /*PRIVATE*/
 int getSnakeLength(Snake *);
 int isInSnake(Snake *,SDL_Rect );

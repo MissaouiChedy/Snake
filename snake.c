@@ -4,8 +4,8 @@
 #include "SDL.h"
 #include "Window.h"
 #include "Game.h"
-#define SCREEN_HEIGHT 600
-#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH 320
 int main(int argc ,char **argv){
  SDL_Init(SDL_INIT_VIDEO);
  Window *frame = createWindow(SCREEN_WIDTH,SCREEN_HEIGHT,"Snakeing!");

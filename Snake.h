@@ -7,8 +7,10 @@ enum DIRECTION {
   DOWN =3,
   LEFT=4
 };
+typedef enum BOOLEAN Boolean;
 typedef struct GAME Game;
 typedef struct RECTCOLLECTION RectCollection;
+
 struct SNAKE {
    SDL_Surface *surface;
    RectCollection *vect;  
@@ -22,15 +24,12 @@ Snake *createSnake(int ,int ,int ,int) ;
 void destroySnake(Snake *);
 void displaySnake(SDL_Surface *,Snake *);
 void eat(Snake *);
-/*PRIVATE*/
-Direction opposite(Direction );
-
 void setDirection(Snake *,Direction );
-
 void moveSnake(Snake *) ;
+Position *getSnakeHead(Snake *);
+Boolean isInSnake(Snake *,Position );
+int getSnakeSize(Snake *);
 
-SDL_Rect *getSnakeHead(Snake *);
-/*PRIVATE*/
-int getSnakeLength(Snake *);
-int isInSnake(Snake *,SDL_Rect );
+static int getSnakeLength(Snake *);
+static Direction opposite(Direction );
 #endif 

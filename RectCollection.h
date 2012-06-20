@@ -1,15 +1,16 @@
 #ifndef _RectCollection
 #define _RectCollection
 typedef struct RECTCOLLECTION RectCollection;  
+typedef SDL_Rect Position;
 struct RECTCOLLECTION{
-  SDL_Rect *vector;
+  Position *vector;
   int length;
 };
-SDL_Rect createRect(int ,int );
+Position createRect(int ,int );
 RectCollection *createRectCollection(int );
 void destroyRectCollection(RectCollection *);
-SDL_Rect *getRect(RectCollection *,int );
-void setRect(RectCollection *,int ,SDL_Rect );
+Position *getRect(RectCollection *,int );
+void setRect(RectCollection *,int ,Position );
 void shiftRight(RectCollection *);
-void addRect(RectCollection *,SDL_Rect );
+void addRect(RectCollection *,Position );
 #endif

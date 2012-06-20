@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "SDL.h"
+#include "Boolean.h"
+#include "Position.h"
 #include "Window.h"
 #include "Food.h"
 #include "Snake.h"
@@ -23,10 +25,10 @@ void destroyGame(Game *game) {
   free(game);
 }
 
-int snakeEatFood(Game *game){
-  SDL_Rect _snake = *( getSnakeHead(game->snake) );
-  SDL_Rect _food = getDecentredFoodPosition(game);
-return ((_snake.x==_food.x)&&(_snake.y==_food.y));
+Boolean snakeEatFood(Game *game){
+  Position snakePos = *( getSnakeHead(game->snake) );
+  Position foodPos = getDecentredFoodPosition(game);
+return ( isEqualPositions(snakePos,foodPos) );
 }
 void displayGame(Game *game){
   moveSnake(game->snake);
@@ -35,7 +37,7 @@ void displayGame(Game *game){
    generateFood( game->food );
    } while(isInSnake( game->snake, getDecentredFoodPosition(game) ));
    eat(game->snake);
-     }
+  }
   refreshWindow(game->window);
   displaySnake(game->window->surface,game->snake); 
   displayFood(game->window->surface,game->food);
@@ -52,11 +54,11 @@ void handleEvent(Game *game,SDL_Event event){
 int getCenteringFactor(int snakeSize,int foodSize){
   return (snakeSize/2)-(foodSize/2);
 }
-SDL_Rect deCenterPosition(Game *game,SDL_Rect position){
-  position.x-=getCenteringFactor(game->snake->size,game->food->size);
-  position.y-=getCenteringFactor(game->snake->size,game->food->size);
+Position deCenterPosition(Game *game,Position position){
+   position.x-=getCenteringFactor(getSnakeSize(game->snake),getFoodSize(game->food));
+   position.y-=getCenteringFactor(getSnakeSize(game->snake),getFoodSize(game->food));
   return position ;
 }
-SDL_Rect getDecentredFoodPosition(Game *game){
- return deCenterPosition(game, game->food->position);
+Position getDecentredFoodPosition(Game *game){
+ return deCenterPosition(game, getFoodPosition(game->food));
 }

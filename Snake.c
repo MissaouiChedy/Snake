@@ -1,6 +1,8 @@
 #include <assert.h>
 #include <stdio.h>
 #include "SDL.h"
+#include "Boolean.h"
+#include "Position.h"
 #include "Game.h"
 #include "RectCollection.h"
 #include "Snake.h"
@@ -8,7 +10,8 @@ Snake *createSnake(int length,int size,int XBound,int YBound) {
   Snake *instance = (Snake *) malloc(sizeof(Snake)) ;
   instance->surface =  SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
   instance->vect = createRectCollection(length);
-  SDL_Rect initing = createRect(100,100);
+  Position initing; 
+         initing = createPosition(100,100);
   int i = 0;
   for (i = 0;i<instance->vect->length;i++){
      setRect(instance->vect,i,initing);
@@ -75,23 +78,23 @@ void moveSnake(Snake *snake) {
     default : printf("Invalid DIRECTION At void moveSnake(Snake *snake);");   
    }
 }
-SDL_Rect *getSnakeHead(Snake *snake){
+Position *getSnakeHead(Snake *snake){
   return getRect(snake->vect,0);
 }
 int getSnakeLength(Snake *snake){
  return snake->vect->length ;
 }
 
-int isInSnake(Snake *snake,SDL_Rect position){
+Boolean isInSnake(Snake *snake,Position position){
  int i = 0;
- int flag = 0;
+ Boolean isInSnakeFlag = FALSE;
  for (i = 0;i<getSnakeLength(snake);i++){
-      if( (getRect(snake->vect,i)->x==position.x)&&(getRect(snake->vect,i)->y==position.y)){
-        flag = 1;
+     if( isEqualPositions( *getRect(snake->vect,i),position) ){
+        isInSnakeFlag = TRUE;
         break;    
        }
   }
- return flag;
+ return isInSnakeFlag;
 }
 
 void destroySnake(Snake *snake){
@@ -99,4 +102,7 @@ void destroySnake(Snake *snake){
  snake->surface = NULL;
  destroyRectCollection(snake->vect);
  free(snake);
+}
+int getSnakeSize(Snake *snake){
+ return snake->size;
 }

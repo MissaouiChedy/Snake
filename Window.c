@@ -30,3 +30,6 @@ void flipWindow(Window *window){
 void refreshWindow(Window *window){
  SDL_FillRect(window->surface,NULL,SDL_MapRGB(window->surface->format,255,255,255));
 }
+void addSurface(Window *window, SDL_Surface *surface){
+  
+}

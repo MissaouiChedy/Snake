@@ -1,18 +1,17 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "SDL.h"
+#include "Boolean.h"
+#include "Position.h"
 #include "Food.h"
 Food *createFood(int size,int minXYBound,int XBound,int YBound,int gridCellSize){
   Food *instance;
   instance = (Food *) malloc(sizeof(Food));
   instance->size = size;
   instance->surface = SDL_CreateRGBSurface(SDL_HWSURFACE,instance->size,instance->size,16,0,0,0,0); 
-  instance->position.x = 0;
-  instance->position.y = 0;
-  instance->gridOriginPoint.x = minXYBound;
-  instance->gridOriginPoint.y = minXYBound;
-  instance->gridBoundPoint.x = XBound;
-  instance->gridBoundPoint.y = YBound;
+  instance->position = createPosition(0,0);
+  instance->gridOriginPoint = createPosition(minXYBound,minXYBound); 
+  instance->gridBoundPoint = createPosition(XBound,YBound);
   instance->gridCellSize = gridCellSize;
   generateFood(instance);
   return instance;
@@ -25,15 +24,16 @@ void destroyFood(Food *food){
 void displayFood(SDL_Surface *dest,Food *food){
   SDL_BlitSurface(food->surface,NULL,dest,&(food->position));
   }
-void setFoodPosition(Food *food,SDL_Rect position){
+void setFoodPosition(Food *food,Position position){
   food->position=position;
 }
-int isInGrid(Food *food,SDL_Rect position){
+/* DUPLICATION WARNING ! */
+Boolean isInGrid(Food *food,Position position){
  return ( (((position.x % food->gridCellSize) - food->gridOriginPoint.x) == 0 )
             && (((position.y % food->gridCellSize) - food->gridOriginPoint.y) == 0) );
 }
-SDL_Rect generateFoodPosition(Food *food) {
-   SDL_Rect temp;
+Position generateFoodPosition(Food *food) {
+   Position temp;
    do {
       temp.x = (rand()%(food->gridBoundPoint.x))+food->gridOriginPoint.x;
       temp.y = (rand()%(food->gridBoundPoint.y))+food->gridOriginPoint.y;
@@ -44,4 +44,10 @@ SDL_Rect generateFoodPosition(Food *food) {
 }
 void generateFood(Food *food) {
   setFoodPosition(food,generateFoodPosition(food));
+}
+int getFoodSize(Food *food){
+ return food->size;
+}
+Position getFoodPosition(Food *food){
+ return food->position;
 }

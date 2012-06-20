@@ -1,18 +1,13 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "SDL.h"
+#include "Position.h"
 #include "RectCollection.h"
-SDL_Rect createRect(int x,int y){
-  SDL_Rect temp ;
-  temp.x=x;
-  temp.y=y;
- return temp;
-}
 RectCollection *createRectCollection(int length){
         RectCollection *instance;
         instance = (RectCollection *) malloc(sizeof(RectCollection));
         instance->length = length;
-        instance->vector = (SDL_Rect *) malloc(sizeof(SDL_Rect)*instance->length);
+        instance->vector = (Position *) malloc(sizeof(Position)*instance->length);
         int i=0;
         for (i=0;i<instance->length;i++){
           (instance->vector+i)->x=0;
@@ -25,11 +20,11 @@ void destroyRectCollection(RectCollection *vect){
   vect->vector=NULL;
   free(vect);
 }
-SDL_Rect *getRect(RectCollection *vect,int pos){
+Position *getRect(RectCollection *vect,int pos){
    assert((pos<vect->length)&&(pos>=0));
    return (vect->vector+pos);
 }
-void setRect(RectCollection *vect,int pos,SDL_Rect newValue){
+void setRect(RectCollection *vect,int pos,Position newValue){
   assert((pos<vect->length)&&(pos>=0));
  (vect->vector+(pos))->x= newValue.x ;
  (vect->vector+(pos))->y= newValue.y ;
@@ -40,8 +35,8 @@ void shiftRight(RectCollection *vect) {
     setRect(vect ,i ,*( getRect(vect,i-1)));
     }  
   }
-void addRect(RectCollection *vect,SDL_Rect node){
- vect->vector= realloc(vect->vector,(vect->length+1)*sizeof(SDL_Rect));
+void addRect(RectCollection *vect,Position node){
+ vect->vector= realloc(vect->vector,(vect->length+1)*sizeof(Position));
  vect->length+=1; 
  setRect(vect,vect->length-1,node);
 }

@@ -3,6 +3,8 @@
 #define SNAKE_SIZE 10
 #define SNAKE_LENGTH 14
 #define FOOD_SIZE 6
+typedef enum BOOLEAN Boolean;
+typedef SDL_Rect Position;
 typedef struct SNAKE Snake;
 typedef struct FOOD Food;
 typedef struct WINDOW Window;
@@ -16,12 +18,9 @@ Game *createGame(Window *);
 void destroyGame(Game *) ;
 void displayGame(Game *);
 void handleEvent(Game *,SDL_Event );
-/* PRIVATE */
-int snakeEatFood(Game *);
-/*PRivate*/
-int getCenteringFactor(int ,int);
-/* PRIVATE */
-SDL_Rect deCenterPosition(Game *,SDL_Rect );
-/* PRIVATE */
-SDL_Rect getDecentredFoodPosition(Game *game);
+
+static Boolean snakeEatFood(Game *);
+static int getCenteringFactor(int ,int);
+static Position deCenterPosition(Game *,Position );
+static Position getDecentredFoodPosition(Game *game);
 #endif

@@ -97,6 +97,17 @@ Boolean isInSnake(Snake *snake,Position position){
  return isInSnakeFlag;
 }
 
+Boolean isSnakeHitHimself(Snake *snake){
+ int i = 0;
+ Boolean isHitFlag = FALSE;
+ for (i=1;i<getSnakeLength(snake);i++){
+    if (isEqualPositions( *getSnakeHead(snake), *getRect(snake->vect,i)) ){
+       isHitFlag = TRUE;
+       break;
+     } 
+ }
+return isHitFlag; 
+}
 void destroySnake(Snake *snake){
  SDL_FreeSurface(snake->surface);
  snake->surface = NULL;

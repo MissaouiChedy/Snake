@@ -7,6 +7,7 @@
 #include "Food.h"
 #include "Snake.h"
 #include "Game.h"
+#define SCORE_INCREMENT 5
 Game *createGame(Window *window){
   Game *instance = (Game *) malloc(sizeof(Game));
   instance->window = window;
@@ -14,6 +15,7 @@ Game *createGame(Window *window){
                                    getWidth(instance->window),getHeight(instance->window));
   instance->food = createFood(FOOD_SIZE,getCenteringFactor(SNAKE_SIZE,FOOD_SIZE),
                                 getWidth(instance->window),getHeight(instance->window),SNAKE_SIZE);
+  instance->score = 0;
  return instance;
 }
 void destroyGame(Game *game) {
@@ -24,25 +26,47 @@ void destroyGame(Game *game) {
   game->window = NULL;
   free(game);
 }
-
+int getGameScore(Game *game){
+ return game->score;
+}
 Boolean snakeEatFood(Game *game){
   Position snakePos = *( getSnakeHead(game->snake) );
   Position foodPos = getDecentredFoodPosition(game);
 return ( isEqualPositions(snakePos,foodPos) );
 }
-void displayGame(Game *game){
+Boolean displayGame(Game *game){
+  
+  if ( runGame(game) ){
+     refreshWindow(game->window);
+     displaySnake(game->window->surface,game->snake); 
+     displayFood(game->window->surface,game->food);
+     flipWindow(game->window);
+   return TRUE;
+    }
+   else { 
+        return FALSE;
+     }  
+}
+static Boolean runGame(Game *game){
+  Boolean isGameRunning = TRUE; 
   moveSnake(game->snake);
+  if (isSnakeHitHimself(game->snake)){
+     isGameRunning = FALSE;
+   }
   if (snakeEatFood(game)){
+   
    do {
-   generateFood( game->food );
-   } while(isInSnake( game->snake, getDecentredFoodPosition(game) ));
+     generateFood( game->food );
+   } while (isInSnake( game->snake, getDecentredFoodPosition(game) ));
+   incrementScore(game);
    eat(game->snake);
   }
-  refreshWindow(game->window);
-  displaySnake(game->window->surface,game->snake); 
-  displayFood(game->window->surface,game->food);
-  flipWindow(game->window);
+return isGameRunning;
 }
+static void incrementScore(Game *game){
+ game->score += SCORE_INCREMENT;
+}
+
 void handleEvent(Game *game,SDL_Event event){
    switch (event.key.keysym.sym){
      case SDLK_UP :setDirection(game->snake,UP);break;

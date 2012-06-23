@@ -13,7 +13,7 @@ int main(int argc ,char **argv){
  SDL_Event event;
  int flag = 1 ;
  while (flag){
-   displayGame(game);  
+   if (!displayGame(game)) {flag=0; break;}  
    SDL_PollEvent(&event);
    SDL_Delay(80);
     if (event.type == SDL_QUIT){
@@ -24,6 +24,7 @@ int main(int argc ,char **argv){
         handleEvent(game,event); 
        }
   } 
+ printf("Your Score is : %i\n",getGameScore(game));
  destroyGame(game); 
  game = NULL;
  destroyWindow(frame); 

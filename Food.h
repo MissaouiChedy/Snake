@@ -1,7 +1,7 @@
 #ifndef _FOOD
 #define _FOOD
-typedef enum BOOLEAN Boolean; 
-typedef SDL_Rect Position;
+#include "Boolean.h"
+#include "Position.h"
 struct FOOD {
  SDL_Surface *surface;
  int size;

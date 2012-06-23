@@ -27,11 +27,12 @@ void displayFood(SDL_Surface *dest,Food *food){
 void setFoodPosition(Food *food,Position position){
   food->position=position;
 }
-/* DUPLICATION WARNING ! */
+
 Boolean isInGrid(Food *food,Position position){
  return ( (((position.x % food->gridCellSize) - food->gridOriginPoint.x) == 0 )
             && (((position.y % food->gridCellSize) - food->gridOriginPoint.y) == 0) );
 }
+
 Position generateFoodPosition(Food *food) {
    Position temp;
    do {

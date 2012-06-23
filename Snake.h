@@ -1,5 +1,6 @@
 #ifndef _SNAKE
 #define _SNAKE
+#include "Boolean.h"
 typedef enum DIRECTION Direction;
 enum DIRECTION {
   UP =1,
@@ -7,7 +8,6 @@ enum DIRECTION {
   DOWN =3,
   LEFT=4
 };
-typedef enum BOOLEAN Boolean;
 typedef struct GAME Game;
 typedef struct RECTCOLLECTION RectCollection;
 
@@ -28,6 +28,7 @@ void setDirection(Snake *,Direction );
 void moveSnake(Snake *) ;
 Position *getSnakeHead(Snake *);
 Boolean isInSnake(Snake *,Position );
+Boolean isSnakeHitHimself(Snake *);
 int getSnakeSize(Snake *);
 
 static int getSnakeLength(Snake *);

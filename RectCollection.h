@@ -1,7 +1,7 @@
 #ifndef _RectCollection
 #define _RectCollection
+#include "Position.h"
 typedef struct RECTCOLLECTION RectCollection;  
-typedef SDL_Rect Position;
 struct RECTCOLLECTION{
   Position *vector;
   int length;

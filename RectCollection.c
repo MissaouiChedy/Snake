@@ -10,8 +10,8 @@ RectCollection *createRectCollection(int length){
         instance->vector = (Position *) malloc(sizeof(Position)*instance->length);
         int i=0;
         for (i=0;i<instance->length;i++){
-          (instance->vector+i)->x=0;
-          (instance->vector+i)->y=0;
+          (instance->vector+i)->x = 0;
+          (instance->vector+i)->y = 0;
        }
    return instance;
 }
@@ -30,7 +30,7 @@ void setRect(RectCollection *vect,int pos,Position newValue){
  (vect->vector+(pos))->y= newValue.y ;
 }
 void shiftRight(RectCollection *vect) {
-  int i ;
+  int i = 0;
    for (i=vect->length-1;i>0;i--){
     setRect(vect ,i ,*( getRect(vect,i-1)));
     }  

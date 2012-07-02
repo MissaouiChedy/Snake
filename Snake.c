@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "RectCollection.h"
 #include "Snake.h"
-Snake *createSnake(int length,int size,int XBound,int YBound) {
+Snake *createSnake(int length,int size,Position minBound, Position maxBound) {
   Snake *instance = (Snake *) malloc(sizeof(Snake)) ;
   instance->surface =  SDL_CreateRGBSurface(SDL_HWSURFACE,size,size,16,0,0,0,0);
   instance->vect = createRectCollection(length);
@@ -18,8 +18,8 @@ Snake *createSnake(int length,int size,int XBound,int YBound) {
      initing.y-=size;
     }
   instance->direction = DOWN; 
-  instance->XBound = XBound - size;
-  instance->YBound = YBound - size;
+  instance->gridOriginPoint = minBound;
+  instance->gridBoundPoint = maxBound;
   instance->size = size;
 return instance;
 }
@@ -53,26 +53,26 @@ void moveSnake(Snake *snake) {
    switch (snake->direction) {
     case UP :   
               getSnakeHead(snake)->y -= snake->size;
-              if (getSnakeHead(snake)->y<0){
-                getSnakeHead(snake)->y = snake->YBound;
+              if ( getSnakeHead(snake)->y < ( snake->gridOriginPoint.y) ){
+                getSnakeHead(snake)->y = snake->gridBoundPoint.y;
               }
               break;
     case DOWN :   
                getSnakeHead(snake)->y += snake->size;
-               if (getSnakeHead(snake)->y>(snake->YBound)){
+               if (getSnakeHead(snake)->y>(snake->gridBoundPoint.y)){
                  getSnakeHead(snake)->y = 0;
                }
                break;
     case RIGHT : 
                getSnakeHead(snake)->x += snake->size;
-               if (getSnakeHead(snake)->x>snake->XBound){
+               if (getSnakeHead(snake)->x>snake->gridBoundPoint.x){
                  getSnakeHead(snake)->x = 0;
                }
                 break;
     case LEFT :  
                getSnakeHead(snake)->x -= snake->size;
-               if (getSnakeHead(snake)->x<0){
-                 getSnakeHead(snake)->x = snake->XBound;
+               if ( getSnakeHead(snake)->x < ( snake->gridOriginPoint.x ) ){
+                 getSnakeHead(snake)->x = snake->gridBoundPoint.x;
                }
                 break;
     default : printf("Invalid DIRECTION At void moveSnake(Snake *snake);");   

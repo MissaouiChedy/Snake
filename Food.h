@@ -11,7 +11,7 @@ struct FOOD {
  int gridCellSize;
 };
 typedef struct FOOD Food;
-Food *createFood(int ,int ,int ,int ,int);
+Food *createFood(int ,Position ,Position ,int);
 void destroyFood(Food *);
 void displayFood(SDL_Surface *,Food *);
 void setFoodPosition(Food *,Position );

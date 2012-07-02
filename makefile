@@ -9,7 +9,7 @@ BUILD_PATH = ../
 ################################################################################################
 %.o: COMPILATION_OPTION = -c
 %.o: %.c %.h
-	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) $(COMPILATION_OPTION) $< -lSDL
+	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) $(COMPILATION_OPTION) $<
 ################################################################################################
 snake: Window.o Snake.o Food.o Game.o RectCollection.o Position.o
 	gcc -I$(SDL_INCLUDE_PATH) $(WARNING_OPTIONS) -o $(BUILD_PATH)$@ snake.c $^ -lSDL

@@ -7,14 +7,14 @@
 #include "Food.h"
 #include "Snake.h"
 #include "Game.h"
-#define SCORE_INCREMENT 5
 Game *createGame(Window *window){
   Game *instance = (Game *) malloc(sizeof(Game));
   instance->window = window;
-  instance->snake = createSnake(SNAKE_LENGTH,SNAKE_SIZE,
-                                   getWidth(instance->window),getHeight(instance->window));
-  instance->food = createFood(FOOD_SIZE,getCenteringFactor(SNAKE_SIZE,FOOD_SIZE),
-                                getWidth(instance->window),getHeight(instance->window),SNAKE_SIZE);
+  instance->snake = createSnake(SNAKE_LENGTH,SNAKE_SIZE, createPosition(GAME_PANEL_ORIGIN_PNT, GAME_PANEL_ORIGIN_PNT),
+                                createPosition( getWidth(instance->window) - SNAKE_SIZE, getHeight(instance->window) - SNAKE_SIZE ) );
+  int minBoundPoint = getCenteringFactor(SNAKE_SIZE,FOOD_SIZE) + GAME_PANEL_ORIGIN_PNT ; 
+  instance->food = createFood(FOOD_SIZE,createPosition(minBoundPoint, minBoundPoint),
+                             createPosition( getWidth(instance->window) - SNAKE_SIZE, getHeight(instance->window) -SNAKE_SIZE ),SNAKE_SIZE);
   instance->score = 0;
  return instance;
 }

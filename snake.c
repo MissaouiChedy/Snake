@@ -9,18 +9,21 @@
 int main(int argc ,char **argv){
  SDL_Init(SDL_INIT_VIDEO);
  Window *frame = createWindow(SCREEN_WIDTH,SCREEN_HEIGHT,"Snakeing!");
- struct GAME *game = createGame(frame);
+ Game *game = createGame(frame);
  SDL_Event event;
  int flag = 1 ;
  while (flag){
-   if (!displayGame(game)) {flag=0; break;}  
+   if ( !displayGame(game) ) {
+     flag=0; 
+     break;
+    }  
    SDL_PollEvent(&event);
    SDL_Delay(80);
     if (event.type == SDL_QUIT){
        flag = 0;
        break;
       } 
-     else if (event.type == SDL_KEYDOWN) {
+    else if (event.type == SDL_KEYDOWN) {
         handleEvent(game,event); 
        }
   } 

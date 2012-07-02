@@ -1,0 +1,8 @@
+!Define and apply coding standards
+!Review Code for Boolean use
+!use metadata
+!Refactor
+!make private functions static
+!check for malloc failure
+!reorganize directories
+!iterate for panel design

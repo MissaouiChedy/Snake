@@ -15,12 +15,12 @@ struct SNAKE {
    SDL_Surface *surface;
    RectCollection *vect;  
    Direction direction;  
-   int XBound;
-   int YBound;
+   Position gridOriginPoint;
+   Position gridBoundPoint;
    int size;
 }; 
 typedef struct SNAKE Snake;
-Snake *createSnake(int ,int ,int ,int) ;
+Snake *createSnake(int ,int ,Position ,Position) ;
 void destroySnake(Snake *);
 void displaySnake(SDL_Surface *,Snake *);
 void eat(Snake *);

@@ -34,20 +34,17 @@ Boolean isInGrid(Food *food, Position position){
 }
 
 Position generateFoodPosition(Food *food) {
-   Position temp;
+   Position position;
    do {
-      temp.x = (rand()%(food->gridBoundPoint.x))+food->gridOriginPoint.x;
-      temp.y = (rand()%(food->gridBoundPoint.y))+food->gridOriginPoint.y;
+      position.x = (rand()%(food->gridBoundPoint.x))+food->gridOriginPoint.x;
+      position.y = (rand()%(food->gridBoundPoint.y))+food->gridOriginPoint.y;
      }
-  while (!isInGrid(food,temp)) ; 
+  while (!isInGrid(food,position)) ; 
 
- return temp; 
+ return position; 
 }
 void generateFood(Food *food) {
   setFoodPosition(food,generateFoodPosition(food));
-  /* Asserts that the generated point Doesn't get out of the game panel */	
-  assert( food->position.x < ( food->gridBoundPoint.x + food->gridOriginPoint.x) );
-  assert( food->position.y < ( food->gridBoundPoint.y + food->gridOriginPoint.y) );
 }
 int getFoodSize(Food *food){
  return food->size;
